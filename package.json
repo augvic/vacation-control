@@ -2,13 +2,13 @@
   "name": "vacation-control",
   "version": "1.0.0",
   "description": "Voluntary project for vacation control.",
-  "main": "main.js",
+  "main": "./.output/main.js",
   "scripts": {
     "start": "electron .",
-    "build": "npm run clean && tsc && npm run tailwindcss && npm run copy-files",
-    "clean": "rm -rf ./.src_output",
+    "build": "npm run clean && tsc -p tsconfig.json && tsc -p tsconfig.cjs.json && tsc -p tsconfig.esm.json && npm run tailwindcss && npm run copy-files",
+    "clean": "rm -rf ./.output",
     "tailwindcss": "npx @tailwindcss/cli -i ./src/io/styles/input.css -o ./src/io/styles/output.css",
-    "copy-files": "cp -r ./src/io/styles/ ./.src_output/io/styles/ && cp ./src/io/main.html ./.src_output/io/main.html"
+    "copy-files": "cp -r ./src/io/styles/ ./.output/src/io/styles/ && cp ./src/io/main.html ./.output/src/io/main.html"
   },
   "repository": {
     "type": "git",
