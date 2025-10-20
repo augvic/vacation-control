@@ -203,6 +203,9 @@
     width: calc(var(--spacing) * 5);
     height: calc(var(--spacing) * 5);
   }
+  .h-\[5\%\] {
+    height: 5%;
+  }
   .h-\[10\%\] {
     height: 10%;
   }
@@ -294,9 +297,6 @@
   }
   .p-1 {
     padding: calc(var(--spacing) * 1);
-  }
-  .p-2 {
-    padding: calc(var(--spacing) * 2);
   }
   .p-3 {
     padding: calc(var(--spacing) * 3);
