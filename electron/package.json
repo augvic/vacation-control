@@ -1,0 +1,29 @@
+{
+  "name": "vacation-control-electron",
+  "version": "1.0.0",
+  "description": "Vacation control Electron process.",
+  "main": "./.dist/main.js",
+  "scripts": {
+    "start": "electron .",
+    "build": "npm run clean && tsc -p tsconfig.cjs.json && npm run copy-files",
+    "clean": "rm -rf ./.dist",
+    "copy-files": "cp -r ./storage ./.dist/storage"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/augvic/vacation-control.git"
+  },
+  "author": "Augusto Viceli",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/augvic/vacation-control/issues"
+  },
+  "homepage": "https://github.com/augvic/vacation-control#readme",
+  "dependencies": {
+    "electron": "^38.2.2",
+    "typescript": "^5.9.3"
+  },
+  "devDependencies": {
+    "@types/node": "^24.7.2"
+  }
+}

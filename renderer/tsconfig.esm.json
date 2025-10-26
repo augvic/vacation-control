@@ -2,11 +2,12 @@
     "compilerOptions": {
         "target": "esnext",
         "module": "esnext",
-        "outDir": "./.output/src/io/components",
+        "outDir": "./.dist",
+        "rootDir": "./",
         "strict": true,
         "esModuleInterop": true,
         "moduleResolution": "bundler",
         "sourceMap": false
     },
-    "include": ["./src/io/components"]
+    "include": ["src/**/*"]
 }

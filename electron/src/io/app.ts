@@ -30,7 +30,7 @@ export class App {
     }
     
     private renderMainHtml(win: any) {
-        win.loadFile(join(__dirname, "..", "main.html"));
+        win.loadFile(join(__dirname, "..", "..", "storage", "renderer", "main.html"));
     }
     
     private startMinMaxCloLogic(win: any) {
