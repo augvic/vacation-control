@@ -104,7 +104,7 @@ class ContainerTitleBarSearchButton {
     }
     
     private createComponents() {
-        this.icon = new Icon("../../../storage/icons/magnifying_glass.png", this.element);
+        this.icon = new Icon("./storage/icons/magnifying_glass.png", this.element);
     }
     
 }
@@ -126,7 +126,7 @@ class ContainerTitleBarAddButton {
     }
     
     private createComponents() {
-        this.icon = new Icon("../../../storage/icons/plus.png", this.element);
+        this.icon = new Icon("./storage/icons/plus.png", this.element);
     }
     
 }

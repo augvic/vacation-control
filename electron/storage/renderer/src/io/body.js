@@ -77,7 +77,7 @@ class ContainerTitleBarSearchButton {
         this.element.className = "w-auto h-auto p-1 bg-blue-700 hover:bg-blue-900 cursor-pointer rounded-md";
     }
     createComponents() {
-        this.icon = new Icon("../../../storage/icons/magnifying_glass.png", this.element);
+        this.icon = new Icon("./storage/icons/magnifying_glass.png", this.element);
     }
 }
 class ContainerTitleBarAddButton {
@@ -93,7 +93,7 @@ class ContainerTitleBarAddButton {
         this.element.className = "w-auto h-auto p-1 bg-green-700 hover:bg-green-900 cursor-pointer rounded-md";
     }
     createComponents() {
-        this.icon = new Icon("../../../storage/icons/plus.png", this.element);
+        this.icon = new Icon("./storage/icons/plus.png", this.element);
     }
 }
 class ContainerTable {

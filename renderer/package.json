@@ -7,7 +7,7 @@
     "clean": "rm -rf ./.dist",
     "tailwindcss": "npx @tailwindcss/cli -i ./storage/styles/input.css -o ./storage/styles/output.css",
     "copy-files": "cp ./main.html ./.dist/main.html && cp -r ./storage ./.dist/storage",
-    "copy-to-electron": "cp -r ./.dist/ ../electron/storage/renderer"
+    "copy-to-electron": "rm -rf ../electron/storage/renderer && cp -r ./.dist/ ../electron/storage/renderer"
   },
   "repository": {
     "type": "git",
