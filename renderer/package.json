@@ -4,10 +4,10 @@
   "description": "Vacation control renderer process.",
   "scripts": {
     "build": "npm run clean && tsc -p tsconfig.esm.json && npm run tailwindcss && npm run copy-files && npm run copy-to-electron",
-    "clean": "rm -rf ./.dist",
+    "clean": "rm -rf ./.package",
     "tailwindcss": "npx @tailwindcss/cli -i ./storage/styles/input.css -o ./storage/styles/output.css",
-    "copy-files": "cp ./main.html ./.dist/main.html && cp -r ./storage ./.dist/storage",
-    "copy-to-electron": "rm -rf ../electron/storage/renderer && cp -r ./.dist/ ../electron/storage/renderer"
+    "copy-files": "cp ./main.html ./.package/main.html && cp -r ./storage ./.package/storage",
+    "copy-to-electron": "rm -rf ../electron/storage/renderer && cp -r ./.package/ ../electron/storage/renderer"
   },
   "repository": {
     "type": "git",

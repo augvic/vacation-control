@@ -2,7 +2,7 @@
     "compilerOptions": {
         "target": "esnext",
         "module": "esnext",
-        "outDir": "./.dist",
+        "outDir": "./.package",
         "rootDir": "./",
         "strict": true,
         "esModuleInterop": true,
