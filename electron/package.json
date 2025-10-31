@@ -2,12 +2,12 @@
   "name": "vacation-control-electron",
   "version": "1.0.0",
   "description": "Vacation control Electron process.",
-  "main": "./.dist/main.js",
+  "main": "./.package/main.js",
   "scripts": {
     "start": "electron .",
     "build": "npm run clean && tsc -p tsconfig.cjs.json && npm run copy-files",
-    "clean": "rm -rf ./.dist",
-    "copy-files": "cp -r ./storage ./.dist/storage"
+    "clean": "rm -rf ./.package",
+    "copy-files": "cp -r ./storage ./.package/storage"
   },
   "repository": {
     "type": "git",
