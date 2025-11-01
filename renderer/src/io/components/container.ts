@@ -82,7 +82,7 @@ class SearchButton {
     
     private createSelf() {
         this.element = document.createElement("button");
-        this.element.className = "w-auto h-auto p-1 bg-blue-700 hover:bg-blue-900 cursor-pointer rounded-md";
+        this.element.className = "w-auto h-auto p-1 bg-blue-700 hover:bg-blue-900 cursor-pointer rounded-md transition-colors duration-300";
     }
     
     private createComponents() {
@@ -105,7 +105,7 @@ class AddButton {
     
     private createSelf() {
         this.element = document.createElement("button");
-        this.element.className = "w-auto h-auto p-1 bg-green-700 hover:bg-green-900 cursor-pointer rounded-md";
+        this.element.className = "w-auto h-auto p-1 bg-green-700 hover:bg-green-900 cursor-pointer rounded-md transition-colors duration-300";
     }
     
     private createComponents() {
