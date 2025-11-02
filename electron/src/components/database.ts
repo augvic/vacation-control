@@ -25,7 +25,11 @@ export class DbHandler {
     }
     
     create(user: string, admission: string) {
-        this.db.prepare("INSERT INTO users (name, admission) VALUES (?, ?)").run(user, admission);
+        try {
+            this.db.prepare("INSERT INTO users (name, admission) VALUES (?, ?)").run(user, admission);
+        } catch(error) {
+            throw new Error(`Erro interno ao`);
+        }
     }
     
     read(): [{ id: number; user: string; admission: string }] {
