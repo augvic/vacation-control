@@ -1,4 +1,4 @@
-import { IpcHandler } from "../components/ipc_handler";
+import { IpcHandler } from "../components/ipc_handler.js";
 
 export class CreateUser {
     
@@ -10,11 +10,12 @@ export class CreateUser {
     
     async execute(data: { user: string, admission: string }) {
         try {
-            const response = await this.ipcHandler.send_user(data);
-            
-            return { success: true, message: `Usuário ${user} adicionado.` };
+            return await this.ipcHandler.send_user(data);
         } catch(error) {
-            return { success: false, message: "Erro ao adicionar usuário. Contate o administrador." }
+            console.error(`❌ Error on (CreateUser) task: ${error}`);
+            const err = new Error("❌ Erro interno ao criar usuário. Contate o administrador.");
+            err.name = "";
+            throw err;
         }
     }
 }

@@ -29,7 +29,11 @@ export class App {
         });
         ipcMain.on("window-close", () => win.close());
         ipcMain.handle("user:create", (event, data: { user: string, admission: string }) => {
-            return this.createUserTask.execute(data.user, data.admission);
+            try {
+                return this.createUserTask.execute(data.user, data.admission);
+            } catch(error) {
+                return { success: false, message: error }
+            }
         });
     }
     

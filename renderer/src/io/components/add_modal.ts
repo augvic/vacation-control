@@ -1,3 +1,6 @@
+import { CreateUser } from "../../tasks/create_user.js";
+import { Notification } from "./notification.js";
+
 export class AddModal {
     
     element!: HTMLDivElement
@@ -136,9 +139,12 @@ class Input {
 class AddButton {
     
     element!: HTMLButtonElement
+    createUserTask: CreateUser
     
     constructor(appendTo: HTMLElement) {
+        this.createUserTask = new CreateUser()
         this.createSelf();
+        this.startListeners();
         appendTo.appendChild(this.element);
     }
     
@@ -146,6 +152,23 @@ class AddButton {
         this.element = document.createElement("button");
         this.element.innerText = "Adicionar";
         this.element.className = "w-auto h-auto bg-green-700 hover:bg-green-900 cursor-pointer text-white p-2 rounded-md transition-colors duration-300";
+    }
+    
+    private startListeners() {
+        this.element.addEventListener("click", async () => {
+            const user = (document.getElementById("add-modal-name")! as HTMLInputElement).value;
+            const admission = (document.getElementById("add-modal-admission")! as HTMLInputElement).value;
+            try {
+                const response = await this.createUserTask.execute({ user: user, admission: admission });
+                if (response.success) {
+                    new Notification(response.message, "green");
+                } else {
+                    new Notification(response.message, "red");
+                }
+            } catch(error) {
+                new Notification(`${error}`, "red");
+            }
+        });
     }
     
 }

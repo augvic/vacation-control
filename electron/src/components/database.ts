@@ -8,32 +8,42 @@ export class DbHandler {
     db: DatabaseType
     
     constructor() {
-        let dbPath = "";
-        if (app.isPackaged) {
-            dbPath = join(process.resourcesPath, "database.db");
-        } else {
-            dbPath = join(__dirname, "..", "..", "storage", "database.db");
+        try {
+            let dbPath = "";
+            if (app.isPackaged) {
+                dbPath = join(process.resourcesPath, "database.db");
+            } else {
+                dbPath = join(__dirname, "..", "..", "storage", "database.db");
+            }
+            this.db = new Database(dbPath);
+            this.db.prepare(`
+                CREATE TABLE IF NOT EXISTS users (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    user TEXT NOT NULL,
+                    admission TEXT NOT NULL
+                )
+            `).run();
+        } catch(error) {
+            const err = new Error(`Error on (Database) component on (constructor) method: ${error}`);
+            err.name = "";
+            throw err;
         }
-        this.db = new Database(dbPath);
-        this.db.prepare(`
-            CREATE TABLE IF NOT EXISTS users (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                user TEXT NOT NULL,
-                admission TEXT NOT NULL
-            )
-        `).run();
     }
     
     create(user: string, admission: string) {
         try {
-            this.db.prepare("INSERT INTO users (name, admission) VALUES (?, ?)").run(user, admission);
+            this.db.prepare("INSERT INTO users (user, admission) VALUES (?, ?)").run(user, admission);
         } catch(error) {
-            throw new Error(`Error on creating new user (${user}) - ${error}`);
+            throw new Error(`Error on (Database) component on (create) method: ${error}`);
         }
     }
     
     read(): [{ id: number; user: string; admission: string }] {
-        return this.db.prepare("SELECT * FROM users").all() as [{ id: number; user: string; admission: string }];
+        try {
+            return this.db.prepare("SELECT * FROM users").all() as [{ id: number; user: string; admission: string }];
+        } catch(error) {
+            throw new Error(`Error on (Database) component on (read) method: ${error}`);
+        }
     }
     
 }

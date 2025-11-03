@@ -19,11 +19,11 @@ export class LogSystem {
     }
     
     write_error(text: string) {
-        appendFileSync(`${this.logPath}/errors.txt`, text);
+        appendFileSync(`${this.logPath}/errors.txt`, `⌚ ${new Date(Date.now()).toLocaleString("pt-BR")}\n` + text + "\n\n");
     }
     
     write_text(text: string) {
-        appendFileSync(`${this.logPath}/runtime.txt`, text);
+        appendFileSync(`${this.logPath}/runtime.txt`, `⌚ ${new Date(Date.now()).toLocaleString("pt-BR")}\n` + text + "\n\n");
     }
     
 }

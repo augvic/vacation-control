@@ -4,5 +4,5 @@ contextBridge.exposeInMainWorld("api", {
     minimize: () => ipcRenderer.send("window-minimize"),
     maximize: () => ipcRenderer.send("window-maximize"),
     close: () => ipcRenderer.send("window-close"),
-    createUser: (data: {}) => ipcRenderer.invoke("user:create", data)
+    createUser: (data: { user: string, admission: string }) => ipcRenderer.invoke("user:create", data)
 });

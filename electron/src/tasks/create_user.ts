@@ -14,13 +14,17 @@ export class CreateUser {
     execute(user: string, admission: string): { success: boolean, message: string } {
         try {
             if (!user || !admission) {
+                this.logSystem.write_text(`❌ Preencha todos os campos.`);
                 return { success: false, message: `❌ Preencha todos os campos.` };    
             }
             this.db.create(user, admission);
-            return { success: true, message: `Usuário ${user} adicionado.` };
+            this.logSystem.write_text(`✅ Usuário (${user}) adicionado.`);
+            return { success: true, message: `✅ Usuário (${user}) adicionado.` };
         } catch(error) {
-            this.logSystem.write_error(`⌚ ${Date.now()}\n❌ Erro: ${error}`);
-            throw new Error("Erro ao adicionar usuário. Contate o administrador.")
+            this.logSystem.write_error(`❌ Error on (CreateUser) task: ${error}`);
+            const err = new Error("❌ Erro interno ao adicionar usuário. Contate o administrador.")
+            err.name = "";
+            throw err;
         }
     }
 }
