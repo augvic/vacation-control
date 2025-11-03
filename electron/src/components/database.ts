@@ -28,7 +28,7 @@ export class DbHandler {
         try {
             this.db.prepare("INSERT INTO users (name, admission) VALUES (?, ?)").run(user, admission);
         } catch(error) {
-            throw new Error(`Erro interno ao`);
+            throw new Error(`Error on creating new user (${user}) - ${error}`);
         }
     }
     
