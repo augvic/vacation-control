@@ -3,12 +3,14 @@ import { join } from "path";
 import { CreateUser } from "../tasks/create_user";
 import { GetUsers } from "../tasks/get_users";
 import { DeleteUser } from "../tasks/delete_user";
+import { CreateVacation } from "../tasks/create_vacation";
 
 export class App {
     
     createUserTask: CreateUser
     getUsersTask: GetUsers
     deleteUserTask: DeleteUser
+    createVacationTask: CreateVacation
     
     constructor() {
         app.whenReady().then(() => { 
@@ -22,6 +24,7 @@ export class App {
         this.createUserTask = new CreateUser();
         this.getUsersTask = new GetUsers()
         this.deleteUserTask = new DeleteUser();
+        this.createVacationTask = new CreateVacation();
     }
     
     private startIpcHandler(win: any) {
@@ -51,6 +54,13 @@ export class App {
         ipcMain.handle("user:delete", (event, data) => {
             try {
                 return this.deleteUserTask.execute(data.id, data.user);
+            } catch(error) {
+                return { success: false, message: error }
+            }
+        });
+        ipcMain.handle("vacation:create", (event, data) => {
+            try {
+                return this.createVacationTask.execute(data.userId, data.user, data.begin, data.end);
             } catch(error) {
                 return { success: false, message: error }
             }

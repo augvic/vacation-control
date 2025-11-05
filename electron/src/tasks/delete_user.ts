@@ -16,7 +16,7 @@ export class DeleteUser {
             this.db.deleteUser(id);
             return { success: true, message: `✅ Funcionário excluído: ${user}.` }
         } catch(error) {
-            this.logSystem.write_error(`❌ Error in (Delete) task: ${error}`);
+            this.logSystem.write_error(`❌ Error in (DeleteUser) task: ${error}.`);
             const err = new Error("❌ Erro interno ao remover funcionário. Contate o administrador.")
             err.name = "";
             throw err;

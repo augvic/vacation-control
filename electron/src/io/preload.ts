@@ -7,4 +7,5 @@ contextBridge.exposeInMainWorld("api", {
     createUser: (data: { user: string, admission: string }) => ipcRenderer.invoke("user:create", data),
     getUsers: () => ipcRenderer.invoke("user:get"),
     deleteUser: (data: { id: number, user: string }) => ipcRenderer.invoke("user:delete", data),
+    createVacation: (data: { userId: number, user: string, begin: string, end: string }) => ipcRenderer.invoke("vacation:create", data)
 });

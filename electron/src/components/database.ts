@@ -28,31 +28,31 @@ export class DbHandler {
             this.db.prepare(`
                 CREATE TABLE IF NOT EXISTS vacations (
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
-                    user TEXT NOT NULL,
+                    userid TEXT NOT NULL,
                     begin TEXT NOT NULL,
                     end TEXT NOT NULL
                 )
             `).run();
         } catch(error) {
-            const err = new Error(`Error on (Database) component on (constructor) method: ${error}`);
+            const err = new Error(`Error in (Database) component in (constructor) method: ${error}.`);
             err.name = "";
             throw err;
         }
     }
     
-    create(user: string, admission: string) {
+    createUser(user: string, admission: string) {
         try {
             this.db.prepare("INSERT INTO users (user, admission, status, daysLeft) VALUES (?, ?, ?, ?)").run(user, admission, "Não marcado", "30");
         } catch(error) {
-            throw new Error(`Error on (Database) component on (create) method: ${error}`);
+            throw new Error(`Error in (Database) component in (createUser) method: ${error}.`);
         }
     }
     
-    readAll() {
+    readAllUsers() {
         try {
             return this.db.prepare("SELECT * FROM users").all() as [{ id: number; user: string; admission: string; status: string; daysLeft: string }];
         } catch(error) {
-            throw new Error(`Error on (Database) component on (read) method: ${error}`);
+            throw new Error(`Error in (Database) component in (readAllUsers) method: ${error}.`);
         }
     }
     
@@ -60,8 +60,16 @@ export class DbHandler {
         try {
             this.db.prepare(`DELETE FROM users WHERE id = ${id}`).run();
         } catch(error) {
-            throw new Error(`Error on (Database) component on (read) method: ${error}`);
+            throw new Error(`Error in (Database) component in (deleteUser) method: ${error}.`);
         }
     }
     
+    createVacation(userId: number, begin: string, end: string) {
+        try {
+            this.db.prepare(`INSERT INTO vacations (userid, begin, end) VALUES (?, ?, ?)`).run(userId, begin, end);
+        } catch(error) {
+            throw new Error(`Error in (Database) component in (createVacation) method: ${error}.`);
+        }
+    }
+
 }

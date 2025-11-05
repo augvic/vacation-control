@@ -205,7 +205,7 @@ class BodyRowButtonsCell {
     
     private createSelf() {
         this.element = document.createElement("div");
-        this.element.className = "h-auto w-auto p-2 flex items-center justify-center whitespace-nowrap";
+        this.element.className = "h-auto w-auto p-2 flex items-center justify-center whitespace-nowrap gap-x-2";
         this.button = document.createElement("button");
         this.button.className = "w-auto h-auto p-1 bg-gray-900 hover:bg-black cursor-pointer rounded-md transition-colors duration-300"
         this.icon = new Icon("./storage/icons/vacation.png", this.button);

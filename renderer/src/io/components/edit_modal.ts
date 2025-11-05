@@ -1,6 +1,6 @@
-import { CreateUser } from "../../tasks/create_user.js";
-import { Notification } from "./notification.js";
-import { Body } from "./users_table.js";
+import { Icon } from "./icon";
+import { CreateVacation } from "../../tasks/create_vacation";
+import { Notification } from "./notification";
 
 export class EditModal {
     
@@ -111,11 +111,13 @@ class ContainerBody {
     }
     
     private createComponents(id: string, user: string, admission: string, status: string, daysLeft: string) {
-        new Info(this.element, id, "id", true, "ID");
+        new Info(this.element, id, "user-id", true, "ID");
         new Info(this.element, user, "name", false, "Nome");
         new Info(this.element, admission, "admission", false, "Admissão");
         new Info(this.element, status, "status", false, "Status");
         new Info(this.element, daysLeft, "days-left", false, "Dias Restantes");
+        new Input(this.element, "Início do Período:", "begin", "date");
+        new Input(this.element, "Fim do Período:", "end", "date");
     }
     
 }
@@ -134,10 +136,67 @@ class Info {
         this.element.innerText = `${prefix}: ${value}`;
         this.element.id = `edit-modal-${id}`;
         this.element.className = "w-auto h-auto cursor-default";
-        this.element.contentEditable = "false";
         if (hidden) {
             this.element.style.display = "none";
         }
+    }
+    
+}
+
+class Input {
+    
+    element!: HTMLInputElement
+    
+    constructor(appendTo: HTMLElement, placeholder: string, id: string, type: string) {
+        this.createSelf(placeholder, id, type);
+        appendTo.appendChild(this.element);
+    }
+    
+    private createSelf(placeholder: string, id: string, type: string) {
+        this.element = document.createElement("input");
+        this.element.placeholder = placeholder;
+        this.element.id = `add-modal-${id}`;
+        this.element.type = type;
+        this.element.className = "w-[300px] h-[30px] bg-white outline-none border border-gray-300 rounded-md p-2";
+    }
+    
+}
+
+class AddButton {
+    
+    element!: HTMLButtonElement
+    icon!: Icon
+    
+    constructor(appendTo: HTMLElement) {
+        this.createSelf();
+        this.createComponents();
+        this.startListeners();
+        appendTo.appendChild(this.element);
+    }
+    
+    private createSelf() {
+        this.element = document.createElement("button");
+        this.element.className = "w-auto h-auto p-1 bg-green-700 hover:bg-green-900 cursor-pointer rounded-md transition-colors duration-300";
+    }
+    
+    private createComponents() {
+        this.icon = new Icon("./storage/icons/plus.png", this.element);
+    }
+    
+    private startListeners() {
+        this.element.addEventListener("click", async () => {
+            const createVacationTask = new CreateVacation();
+            const userId = parseInt((document.getElementById("edit-modal-user-id")! as HTMLDivElement).innerText);
+            const user = (document.getElementById("edit-modal-name")! as HTMLDivElement).innerText;
+            const begin = (document.getElementById("edit-modal-begin")! as HTMLInputElement).value;
+            const end = (document.getElementById("edit-modal-end")! as HTMLInputElement).value;
+            const response = await createVacationTask.execute({ userId: userId, user: user, begin: begin, end: end });
+            if (response.success) {
+                new Notification(response.message, "green");
+            } else {
+                new Notification(response.message, "red");
+            }
+        });
     }
     
 }

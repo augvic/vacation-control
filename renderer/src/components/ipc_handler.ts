@@ -4,7 +4,7 @@ export class IpcHandler {
         try {
             return window.api.createUser(data);
         } catch(error) {
-            const err = new Error(`Error on (IpcHandler) component on (sendUser) method: ${error}`);
+            const err = new Error(`Error in (IpcHandler) component in (sendUser) method: ${error}.`);
             err.name = "";
             throw err;
         }
@@ -14,7 +14,7 @@ export class IpcHandler {
         try {
             return window.api.getUsers();
         } catch(error) {
-            const err = new Error(`Error on (IpcHandler) component on (getUsers) method: ${error}`);
+            const err = new Error(`Error in (IpcHandler) component in (getUsers) method: ${error}.`);
             err.name = "";
             throw err;
         }
@@ -24,10 +24,20 @@ export class IpcHandler {
         try {
             return window.api.deleteUser(data);
         } catch(error) {
-            const err = new Error(`Error on (IpcHandler) component on (getUsers) method: ${error}`);
+            const err = new Error(`Error in (IpcHandler) component in (getUsers) method: ${error}.`);
             err.name = "";
             throw err;
         }
     }
     
+    async createVacation(data: { userId: number, user: string, begin: string, end: string }) {
+        try {
+            return window.api.createVacation(data);
+        } catch(error) {
+            const err = new Error(`Error in (IpcHandler) component in (createVacation) method: ${error}.`);
+            err.name = "";
+            throw err;
+        }
+    }
+
 }
