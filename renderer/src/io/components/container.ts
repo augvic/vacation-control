@@ -1,6 +1,7 @@
 import { Icon } from "./icon.js";
 import { UsersTableWrapper } from "./users_table.js";
 import { AddModal } from "./add_modal.js";
+import { Body } from "./users_table.js";
 
 export class Container {
     
@@ -32,6 +33,7 @@ class TitleBar {
     searchInput!: SearchInput
     searchButton!: SearchButton
     addButton!: AddButton
+    refreshButton!: RefreshButton
     
     constructor(appendTo: HTMLElement) {
         this.createSelf();
@@ -48,6 +50,7 @@ class TitleBar {
         this.searchInput = new SearchInput(this.element);
         this.searchButton = new SearchButton(this.element);
         this.addButton = new AddButton(this.element);
+        this.refreshButton = new RefreshButton(this.element);
     }
     
 }
@@ -115,6 +118,36 @@ class AddButton {
     private startListeners() {
         this.element.addEventListener("click", () => {
             new AddModal();
+        });
+    }
+    
+}
+
+class RefreshButton {
+    
+    element!: HTMLButtonElement
+    icon!: Icon
+    
+    constructor(appendTo: HTMLElement) {
+        this.createSelf();
+        this.createComponents();
+        this.startListeners();
+        appendTo.appendChild(this.element);
+    }
+    
+    private createSelf() {
+        this.element = document.createElement("button");
+        this.element.className = "w-auto h-auto p-1 bg-amber-700 hover:bg-amber-900 cursor-pointer rounded-md transition-colors duration-300";
+    }
+    
+    private createComponents() {
+        this.icon = new Icon("./storage/icons/refresh.png", this.element);
+    }
+    
+    private startListeners() {
+        this.element.addEventListener("click", async () => {
+            document.getElementById("users-table-body")!.remove();
+            new Body(document.getElementById("users-table")!)
         });
     }
     

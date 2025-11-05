@@ -1,5 +1,6 @@
 import { CreateUser } from "../../tasks/create_user.js";
 import { Notification } from "./notification.js";
+import { Body } from "./users_table.js";
 
 export class AddModal {
     
@@ -162,6 +163,9 @@ class AddButton {
                 const response = await this.createUserTask.execute({ user: user, admission: admission });
                 if (response.success) {
                     new Notification(response.message, "green");
+                    document.getElementById("add-modal")!.remove();
+                    document.getElementById("users-table-body")!.remove();
+                    new Body(document.getElementById("users-table")!);
                 } else {
                     new Notification(response.message, "red");
                 }

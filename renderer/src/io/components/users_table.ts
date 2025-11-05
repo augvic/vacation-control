@@ -1,5 +1,8 @@
 import { GetUsers } from "../../tasks/get_users.js";
 import { Notification } from "./notification.js";
+import { Icon } from "./icon.js";
+import { EditModal } from "./edit_modal.js";
+import { DeleteUser } from "../../tasks/delete_user.js";
 
 export class UsersTableWrapper {
     
@@ -37,7 +40,8 @@ class UsersTable {
     
     private createSelf() {
         this.element = document.createElement("div");
-        this.element.className = "w-auto h-auto flex flex-col text-black";
+        this.element.id = "users-table";
+        this.element.className = "w-auto h-auto flex flex-col text-black cursor-default";
     }
     
     private createComponents() {
@@ -67,6 +71,7 @@ class Header {
         new HeaderCell(this.element, "Admissão", 2);
         new HeaderCell(this.element, "Status", 3);
         new HeaderCell(this.element, "Dias restantes", 4);
+        new HeaderCell(this.element, "", 5);
     }
     
 }
@@ -89,7 +94,7 @@ class HeaderCell {
     
 }
 
-class Body {
+export class Body {
     
     element!: HTMLDivElement
     
@@ -101,6 +106,7 @@ class Body {
     
     private createSelf() {
         this.element = document.createElement("div");
+        this.element.id = "users-table-body";
         this.element.className = "w-auto h-auto flex flex-col";
     }
     
@@ -117,7 +123,7 @@ class Body {
             let statusCells: HTMLElement[] = [];
             let daysLeftCells: HTMLElement[] = [];
             users.forEach(user => {
-                new BodyRow(this.element, userCells, admissionCells, statusCells, daysLeftCells, user.user, user.admission, user.status, user.daysLeft);
+                new BodyRow(this.element, userCells, admissionCells, statusCells, daysLeftCells, user.id, user.user, user.admission, user.status, user.daysLeft);
             });
         } catch(error) {
             new Notification(`${error}`, "red");
@@ -130,9 +136,9 @@ class BodyRow {
     
     element!: HTMLDivElement
     
-    constructor(appendTo: HTMLElement, userCells: HTMLElement[], admissionCells: HTMLElement[], statusCells: HTMLElement[], daysLeftCells: HTMLElement[], user: string, admission: string, status: string, daysLeft: string) {
+    constructor(appendTo: HTMLElement, userCells: HTMLElement[], admissionCells: HTMLElement[], statusCells: HTMLElement[], daysLeftCells: HTMLElement[], id: number, user: string, admission: string, status: string, daysLeft: string) {
         this.createSelf();
-        this.createComponents(userCells, admissionCells, statusCells, daysLeftCells, user, admission, status, daysLeft);
+        this.createComponents(userCells, admissionCells, statusCells, daysLeftCells, id, user, admission, status, daysLeft);
         appendTo.appendChild(this.element);
     }
     
@@ -141,12 +147,14 @@ class BodyRow {
         this.element.className = "h-auto w-auto flex";
     }
     
-    private createComponents(userCells: HTMLElement[], admissionCells: HTMLElement[], statusCells: HTMLElement[], daysLeftCells: HTMLElement[], user: string, admission: string, status: string, daysLeft: string) {
+    private createComponents(userCells: HTMLElement[], admissionCells: HTMLElement[], statusCells: HTMLElement[], daysLeftCells: HTMLElement[], id:number, user: string, admission: string, status: string, daysLeft: string) {
         setTimeout(() => {
+            new BodyRowIdCell(this.element, id);
             new BodyRowCell(this.element, userCells, user, 1);
             new BodyRowCell(this.element, admissionCells, admission, 2);
             new BodyRowCell(this.element, statusCells, status, 3);
             new BodyRowCell(this.element, daysLeftCells, daysLeft, 4);
+            new BodyRowButtonsCell(this.element, id, user, admission, status, daysLeft);
         }, 500);
     }
     
@@ -177,6 +185,69 @@ class BodyRowCell {
         this.element = document.createElement("div");
         this.element.className = "h-auto w-auto p-2 flex items-center justify-center whitespace-nowrap";
         this.element.innerText = text;
+    }
+    
+}
+
+class BodyRowButtonsCell {
+    
+    element!: HTMLDivElement
+    button!: HTMLButtonElement
+    deleteButton!: HTMLButtonElement
+    icon!: Icon
+    deleteIcon!: Icon
+    
+    constructor(appendTo: HTMLElement, id: number, user: string, admission: string, status: string, daysLeft: string) {
+        this.createSelf();
+        this.startListeners(id, user, admission, status, daysLeft);
+        appendTo.appendChild(this.element);
+    }
+    
+    private createSelf() {
+        this.element = document.createElement("div");
+        this.element.className = "h-auto w-auto p-2 flex items-center justify-center whitespace-nowrap";
+        this.button = document.createElement("button");
+        this.button.className = "w-auto h-auto p-1 bg-gray-900 hover:bg-black cursor-pointer rounded-md transition-colors duration-300"
+        this.icon = new Icon("./storage/icons/vacation.png", this.button);
+        this.element.appendChild(this.button);
+        this.deleteButton = document.createElement("button");
+        this.deleteButton.className = "w-auto h-auto p-1 bg-red-700 hover:bg-red-900 cursor-pointer rounded-md transition-colors duration-300";
+        this.deleteIcon = new Icon("./storage/icons/delete.png", this.deleteButton);
+        this.element.appendChild(this.deleteButton);
+    }
+    
+    private startListeners(id: number, user: string, admission: string, status: string, daysLeft: string) {
+        this.button.addEventListener("click", () => {
+            new EditModal(String(id), user, admission, status, daysLeft);
+        });
+        this.deleteButton.addEventListener("click", async () => {
+            const deleteUserTask = new DeleteUser();
+            const response = await deleteUserTask.execute({ id: id, user: user });
+            if (response.success) {
+                new Notification(response.message, "green");
+                document.getElementById("users-table-body")!.remove();
+                new Body(document.getElementById("users-table")!);
+            } else {
+                new Notification(response.message, "red");
+            }
+        });
+    }
+    
+}
+
+class BodyRowIdCell {
+    
+    element!: HTMLDivElement
+    
+    constructor(appendTo: HTMLElement, text: number) {
+        this.createSelf(text);
+        appendTo.appendChild(this.element);
+    }
+    
+    private createSelf(text: number) {
+        this.element = document.createElement("div");
+        this.element.className = "hidden";
+        this.element.innerText = String(text);
     }
     
 }

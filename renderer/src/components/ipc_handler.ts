@@ -20,4 +20,14 @@ export class IpcHandler {
         }
     }
     
+    async deleteUser(data: { id: number, user: string }) {
+        try {
+            return window.api.deleteUser(data);
+        } catch(error) {
+            const err = new Error(`Error on (IpcHandler) component on (getUsers) method: ${error}`);
+            err.name = "";
+            throw err;
+        }
+    }
+    
 }

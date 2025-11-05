@@ -1,6 +1,6 @@
 import { IpcHandler } from "../components/ipc_handler.js";
 
-export class GetUsers {
+export class DeleteUser {
     
     ipcHandler: IpcHandler
     
@@ -8,11 +8,11 @@ export class GetUsers {
         this.ipcHandler = new IpcHandler();
     }
     
-    async execute() {
+    async execute(data: { id: number, user: string }) {
         try {
-            return await this.ipcHandler.getUsers();
+            return await this.ipcHandler.deleteUser(data);
         } catch(error) {
-            console.error(`❌ Error on (GetUsers) task: ${error}.`);
+            console.error(`❌ Error on (DeleteUser) task: ${error}.`);
             const err = new Error("❌ Erro interno ao coletar usuários. Contate o administrador.");
             err.name = "";
             throw err;
