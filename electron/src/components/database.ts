@@ -25,6 +25,14 @@ export class DbHandler {
                     daysLeft TEXT NOT NULL
                 )
             `).run();
+            this.db.prepare(`
+                CREATE TABLE IF NOT EXISTS vacations (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    user TEXT NOT NULL,
+                    begin TEXT NOT NULL,
+                    end TEXT NOT NULL
+                )
+            `).run();
         } catch(error) {
             const err = new Error(`Error on (Database) component on (constructor) method: ${error}`);
             err.name = "";
@@ -34,7 +42,7 @@ export class DbHandler {
     
     create(user: string, admission: string) {
         try {
-            this.db.prepare("INSERT INTO users (user, admission, status, daysLeft) VALUES (?, ?, ?, ?)").run(user, admission, "-", "-");
+            this.db.prepare("INSERT INTO users (user, admission, status, daysLeft) VALUES (?, ?, ?, ?)").run(user, admission, "Não marcado", "30");
         } catch(error) {
             throw new Error(`Error on (Database) component on (create) method: ${error}`);
         }
@@ -43,6 +51,14 @@ export class DbHandler {
     readAll() {
         try {
             return this.db.prepare("SELECT * FROM users").all() as [{ id: number; user: string; admission: string; status: string; daysLeft: string }];
+        } catch(error) {
+            throw new Error(`Error on (Database) component on (read) method: ${error}`);
+        }
+    }
+    
+    deleteUser(id: number) {
+        try {
+            this.db.prepare(`DELETE FROM users WHERE id = ${id}`).run();
         } catch(error) {
             throw new Error(`Error on (Database) component on (read) method: ${error}`);
         }

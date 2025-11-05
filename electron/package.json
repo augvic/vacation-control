@@ -6,8 +6,11 @@
   "scripts": {
     "start": "electron .",
     "build": "npm run clean && tsc -p tsconfig.cjs.json && npm run copy-files",
+    "build-w": "npm run clean-w && tsc -p tsconfig.cjs.json && npm run copy-files-w",
     "clean": "rm -rf ./.package",
-    "copy-files": "cp -r ./storage ./.package/storage"
+    "copy-files": "cp -r ./storage ./.package/storage",
+    "clean-w": "powershell Remove-Item -Recurse -Force .\\.package",
+    "copy-files-w": "powershell Copy-Item -Recurse ./storage ./.package/storage"
   },
   "repository": {
     "type": "git",

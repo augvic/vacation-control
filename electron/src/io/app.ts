@@ -2,11 +2,13 @@ import { app, BrowserWindow, ipcMain } from "electron";
 import { join } from "path";
 import { CreateUser } from "../tasks/create_user";
 import { GetUsers } from "../tasks/get_users";
+import { DeleteUser } from "../tasks/delete_user";
 
 export class App {
     
     createUserTask: CreateUser
     getUsersTask: GetUsers
+    deleteUserTask: DeleteUser
     
     constructor() {
         app.whenReady().then(() => { 
@@ -19,6 +21,7 @@ export class App {
         });
         this.createUserTask = new CreateUser();
         this.getUsersTask = new GetUsers()
+        this.deleteUserTask = new DeleteUser();
     }
     
     private startIpcHandler(win: any) {
@@ -41,6 +44,13 @@ export class App {
         ipcMain.handle("user:get", (event) => {
             try {
                 return this.getUsersTask.execute();
+            } catch(error) {
+                return { success: false, message: error }
+            }
+        });
+        ipcMain.handle("user:delete", (event, data) => {
+            try {
+                return this.deleteUserTask.execute(data.id, data.user);
             } catch(error) {
                 return { success: false, message: error }
             }

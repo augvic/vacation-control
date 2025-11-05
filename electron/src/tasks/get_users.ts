@@ -14,11 +14,11 @@ export class GetUsers {
     execute() {
         try {
             const users = this.db.readAll();
-            this.logSystem.write_text(`✅ Usuários coletados.`);
-            return { success: true, message: "✅ Usuários coletados.", data: users };
+            this.logSystem.write_text(`✅ Funcionários coletados.`);
+            return { success: true, message: "✅ Funcionários coletados.", data: users };
         } catch(error) {
-            this.logSystem.write_error(`❌ Error on (GetUsers) task: ${error}`);
-            const err = new Error("❌ Erro interno ao criar usuário. Contate o administrador.");
+            this.logSystem.write_error(`❌ Error in (GetUsers) task: ${error}`);
+            const err = new Error("❌ Erro interno ao coletar funcionários. Contate o administrador.");
             err.name = "";
             throw err;
         }
