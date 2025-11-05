@@ -357,6 +357,9 @@
   .py-3 {
     padding-block: calc(var(--spacing) * 3);
   }
+  .whitespace-nowrap {
+    white-space: nowrap;
+  }
   .text-black {
     color: var(--color-black);
   }

@@ -10,7 +10,7 @@ export class CreateUser {
     
     async execute(data: { user: string, admission: string }) {
         try {
-            return await this.ipcHandler.send_user(data);
+            return await this.ipcHandler.sendUser(data);
         } catch(error) {
             console.error(`❌ Error on (CreateUser) task: ${error}`);
             const err = new Error("❌ Erro interno ao criar usuário. Contate o administrador.");

@@ -1,3 +1,6 @@
+import { GetUsers } from "../../tasks/get_users.js";
+import { Notification } from "./notification.js";
+
 export class UsersTableWrapper {
     
     element!: HTMLDivElement
@@ -79,7 +82,7 @@ class HeaderCell {
     
     private createSelf(text: string, position: number) {
         this.element = document.createElement("div");
-        this.element.className = "h-auto w-auto p-2 flex items-center justify-center";
+        this.element.className = "h-auto w-auto p-2 flex items-center justify-center whitespace-nowrap";
         this.element.innerText = text;
         this.element.id = `header-${position}`;
     }
@@ -101,28 +104,24 @@ class Body {
         this.element.className = "w-auto h-auto flex flex-col";
     }
     
-    private createComponents() {
-        new BodyRow(this.element);
-        new BodyRow(this.element);
-        new BodyRow(this.element);
-        new BodyRow(this.element);
-        new BodyRow(this.element);
-        new BodyRow(this.element);
-        new BodyRow(this.element);
-        new BodyRow(this.element);
-        new BodyRow(this.element);
-        new BodyRow(this.element);
-        new BodyRow(this.element);
-        new BodyRow(this.element);
-        new BodyRow(this.element);
-        new BodyRow(this.element);
-        new BodyRow(this.element);
-        new BodyRow(this.element);
-        new BodyRow(this.element);
-        new BodyRow(this.element);
-        new BodyRow(this.element);
-        new BodyRow(this.element);
-        new BodyRow(this.element);
+    private async createComponents() {
+        try {
+            const getUsersTask = new GetUsers();
+            const response = await getUsersTask.execute();
+            if (!response.success) {
+                new Notification(response.message, "red");
+            }
+            const users = response.data;
+            let userCells: HTMLElement[] = [];
+            let admissionCells: HTMLElement[] = [];
+            let statusCells: HTMLElement[] = [];
+            let daysLeftCells: HTMLElement[] = [];
+            users.forEach(user => {
+                new BodyRow(this.element, userCells, admissionCells, statusCells, daysLeftCells, user.user, user.admission, user.status, user.daysLeft);
+            });
+        } catch(error) {
+            new Notification(`${error}`, "red");
+        }
     }
     
 }
@@ -131,9 +130,9 @@ class BodyRow {
     
     element!: HTMLDivElement
     
-    constructor(appendTo: HTMLElement) {
+    constructor(appendTo: HTMLElement, userCells: HTMLElement[], admissionCells: HTMLElement[], statusCells: HTMLElement[], daysLeftCells: HTMLElement[], user: string, admission: string, status: string, daysLeft: string) {
         this.createSelf();
-        this.createComponents();
+        this.createComponents(userCells, admissionCells, statusCells, daysLeftCells, user, admission, status, daysLeft);
         appendTo.appendChild(this.element);
     }
     
@@ -142,12 +141,12 @@ class BodyRow {
         this.element.className = "h-auto w-auto flex";
     }
     
-    private createComponents() {
+    private createComponents(userCells: HTMLElement[], admissionCells: HTMLElement[], statusCells: HTMLElement[], daysLeftCells: HTMLElement[], user: string, admission: string, status: string, daysLeft: string) {
         setTimeout(() => {
-            new BodyRowCell(this.element, "Augusto", 1);
-            new BodyRowCell(this.element, "17/02", 2);
-            new BodyRowCell(this.element, "Marcado parcial", 3);
-            new BodyRowCell(this.element, "15", 4);
+            new BodyRowCell(this.element, userCells, user, 1);
+            new BodyRowCell(this.element, admissionCells, admission, 2);
+            new BodyRowCell(this.element, statusCells, status, 3);
+            new BodyRowCell(this.element, daysLeftCells, daysLeft, 4);
         }, 500);
     }
     
@@ -157,20 +156,26 @@ class BodyRowCell {
     
     element!: HTMLDivElement
     
-    constructor(appendTo: HTMLElement, text: string, position: number) {
+    constructor(appendTo: HTMLElement, cells: HTMLElement[], text: string, position: number) {
         this.createSelf(text);
         appendTo.appendChild(this.element);
+        cells.push(this.element);
         let headerElement = document.getElementById(`header-${position}`)!;
-        if (headerElement.offsetWidth < this.element.offsetWidth) {
-            headerElement.style.width = this.element.offsetWidth + "px";
-        } else {
-            this.element.style.width = headerElement.offsetWidth + "px";
-        }
+        let width = headerElement.offsetWidth;
+        cells.forEach(cell => {
+            if (cell.offsetWidth > width) {
+                width = cell.offsetWidth;
+            }
+        });
+        cells.forEach(cell => {
+            cell.style.width = width + "px";
+        });
+        headerElement.style.width = width + "px";
     }
     
     private createSelf(text: string) {
         this.element = document.createElement("div");
-        this.element.className = "h-auto w-auto p-2 flex items-center justify-center";
+        this.element.className = "h-auto w-auto p-2 flex items-center justify-center whitespace-nowrap";
         this.element.innerText = text;
     }
     

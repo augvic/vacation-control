@@ -20,7 +20,9 @@ export class DbHandler {
                 CREATE TABLE IF NOT EXISTS users (
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
                     user TEXT NOT NULL,
-                    admission TEXT NOT NULL
+                    admission TEXT NOT NULL,
+                    status TEXT NOT NULL,
+                    daysLeft TEXT NOT NULL
                 )
             `).run();
         } catch(error) {
@@ -32,15 +34,15 @@ export class DbHandler {
     
     create(user: string, admission: string) {
         try {
-            this.db.prepare("INSERT INTO users (user, admission) VALUES (?, ?)").run(user, admission);
+            this.db.prepare("INSERT INTO users (user, admission, status, daysLeft) VALUES (?, ?, ?, ?)").run(user, admission, "-", "-");
         } catch(error) {
             throw new Error(`Error on (Database) component on (create) method: ${error}`);
         }
     }
     
-    read(): [{ id: number; user: string; admission: string }] {
+    readAll() {
         try {
-            return this.db.prepare("SELECT * FROM users").all() as [{ id: number; user: string; admission: string }];
+            return this.db.prepare("SELECT * FROM users").all() as [{ id: number; user: string; admission: string; status: string; daysLeft: string }];
         } catch(error) {
             throw new Error(`Error on (Database) component on (read) method: ${error}`);
         }

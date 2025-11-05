@@ -1,10 +1,12 @@
 import { app, BrowserWindow, ipcMain } from "electron";
 import { join } from "path";
 import { CreateUser } from "../tasks/create_user";
+import { GetUsers } from "../tasks/get_users";
 
 export class App {
     
     createUserTask: CreateUser
+    getUsersTask: GetUsers
     
     constructor() {
         app.whenReady().then(() => { 
@@ -16,6 +18,7 @@ export class App {
             }
         });
         this.createUserTask = new CreateUser();
+        this.getUsersTask = new GetUsers()
     }
     
     private startIpcHandler(win: any) {
@@ -31,6 +34,13 @@ export class App {
         ipcMain.handle("user:create", (event, data: { user: string, admission: string }) => {
             try {
                 return this.createUserTask.execute(data.user, data.admission);
+            } catch(error) {
+                return { success: false, message: error }
+            }
+        });
+        ipcMain.handle("user:get", (event) => {
+            try {
+                return this.getUsersTask.execute();
             } catch(error) {
                 return { success: false, message: error }
             }
