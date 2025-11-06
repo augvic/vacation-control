@@ -14,6 +14,7 @@ export class DeleteUser {
     execute(id: number, user: string) {
         try {
             this.db.deleteUser(id);
+            this.db.deleteAllVacations(id);
             return { success: true, message: `✅ Funcionário (${user}) excluído.` }
         } catch(error) {
             this.logSystem.write_error(`❌ Error in (DeleteUser) task: ${error}.`);
