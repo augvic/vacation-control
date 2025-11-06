@@ -13,6 +13,10 @@ export class CreateVacation {
     
     execute(userId: number, user: string, begin: string, end: string): { success: boolean, message: string } {
         try {
+            if (!begin || !end) {
+                this.logSystem.write_text(`❌ Preencha todos os campos.`);
+                return { success: false, message: `❌ Preencha todos os campos.` };    
+            }
             this.db.createVacation(userId, begin, end)
             this.logSystem.write_text(`✅ Registro de férias de (${user}) adicionado.`);
             return { success: true, message: `✅ Registro de férias de (${user}) adicionado.` };

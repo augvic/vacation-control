@@ -4,6 +4,8 @@ import { CreateUser } from "../tasks/create_user";
 import { GetUsers } from "../tasks/get_users";
 import { DeleteUser } from "../tasks/delete_user";
 import { CreateVacation } from "../tasks/create_vacation";
+import { GetVacations } from "../tasks/get_vacations";
+import { DeleteVacation } from "../tasks/delete_vacation";
 
 export class App {
     
@@ -11,6 +13,9 @@ export class App {
     getUsersTask: GetUsers
     deleteUserTask: DeleteUser
     createVacationTask: CreateVacation
+    getVacationsTask: GetVacations
+    deleteVacationTask: DeleteVacation
+
     
     constructor() {
         app.whenReady().then(() => { 
@@ -25,6 +30,8 @@ export class App {
         this.getUsersTask = new GetUsers()
         this.deleteUserTask = new DeleteUser();
         this.createVacationTask = new CreateVacation();
+        this.getVacationsTask = new GetVacations();
+        this.deleteVacationTask = new DeleteVacation();
     }
     
     private startIpcHandler(win: any) {
@@ -61,6 +68,20 @@ export class App {
         ipcMain.handle("vacation:create", (event, data) => {
             try {
                 return this.createVacationTask.execute(data.userId, data.user, data.begin, data.end);
+            } catch(error) {
+                return { success: false, message: error }
+            }
+        });
+        ipcMain.handle("vacation:get", (event, data) => {
+            try {
+                return this.getVacationsTask.execute(data.userId);
+            } catch(error) {
+                return { success: false, message: error }
+            }
+        });
+        ipcMain.handle("vacation:delete", (event, data) => {
+            try {
+                return this.deleteVacationTask.execute(data.id);
             } catch(error) {
                 return { success: false, message: error }
             }

@@ -28,7 +28,7 @@ export class DbHandler {
             this.db.prepare(`
                 CREATE TABLE IF NOT EXISTS vacations (
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
-                    userid TEXT NOT NULL,
+                    userid INTEGER NOT NULL,
                     begin TEXT NOT NULL,
                     end TEXT NOT NULL
                 )
@@ -71,5 +71,21 @@ export class DbHandler {
             throw new Error(`Error in (Database) component in (createVacation) method: ${error}.`);
         }
     }
-
+    
+    readAllVacations(userId: number) {
+        try {
+            return this.db.prepare(`SELECT * FROM vacations WHERE userid = ${userId}`).all() as [{ id: number; userId: string; begin: string; end: string }];
+        } catch(error) {
+            throw new Error(`Error in (Database) component in (readAllUsers) method: ${error}.`);
+        }
+    }
+    
+    deleteVacation(id: number) {
+        try {
+            this.db.prepare(`DELETE FROM vacations WHERE id = ${id}`).run();
+        } catch(error) {
+            throw new Error(`Error in (Database) component in (deleteVacation) method: ${error}.`);
+        }
+    }
+    
 }
