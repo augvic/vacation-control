@@ -1,4 +1,7 @@
-import { Icon } from "./icon";
+import { Icon } from "./icon.js";
+import { GetVacations } from "../../tasks/get_vacations.js";
+import { DeleteVacation } from "../../tasks/delete_vacation.js";
+import { Notification } from "./notification.js";
 
 export class VacationsTableWrapper {
     
@@ -13,7 +16,7 @@ export class VacationsTableWrapper {
     
     private createSelf() {
         this.element = document.createElement("div");
-        this.element.className = "w-full h-full flex overflow-auto";
+        this.element.className = "w-[300px] h-[200px] flex justify-center overflow-auto";
     }
     
     private createComponents() {
@@ -83,7 +86,7 @@ class HeaderCell {
         this.element = document.createElement("div");
         this.element.className = "h-auto w-auto p-2 flex items-center justify-center whitespace-nowrap";
         this.element.innerText = text;
-        this.element.id = `header-${position}`;
+        this.element.id = `vacations-header-${position}`;
     }
     
 }
@@ -94,8 +97,8 @@ export class Body {
     
     constructor(appendTo: HTMLElement) {
         this.createSelf();
-        this.createComponents();
         appendTo.appendChild(this.element);
+        this.createComponents();
     }
     
     private createSelf() {
@@ -106,17 +109,20 @@ export class Body {
     
     private async createComponents() {
         try {
-            const getUsersTask = new GetUsers();
-            const response = await getUsersTask.execute();
-            if (!response.success) {
-                new Notification(response.message, "red");
-            }
-            const users = response.data;
-            let beginCells: HTMLElement[] = [];
-            let endCells: HTMLElement[] = [];
-            users.forEach(vacation => {
-                new BodyRow(this.element, beginCells, endCells, vacation.id, vacation.begin, vacation.end);
-            });
+            const getVacationsTask = new GetVacations();
+            setTimeout(async () => {
+                const userId = document.getElementById("edit-modal-user-id")!.innerText;
+                const response = await getVacationsTask.execute({ userId: parseInt(userId) });
+                if (!response.success) {
+                    new Notification(response.message, "red");
+                }
+                const vacations = response.data;
+                let beginCells: HTMLElement[] = [];
+                let endCells: HTMLElement[] = [];
+                vacations.forEach(vacation => {
+                    new BodyRow(this.element, beginCells, endCells, vacation.id, vacation.begin, vacation.end);
+                });
+            }, 500);
         } catch(error) {
             new Notification(`${error}`, "red");
         }
@@ -130,8 +136,8 @@ class BodyRow {
     
     constructor(appendTo: HTMLElement, beginCells: HTMLElement[], endCells: HTMLElement[], id: number, begin: string, end: string) {
         this.createSelf();
-        this.createComponents(beginCells, endCells, id, begin, end);
         appendTo.appendChild(this.element);
+        this.createComponents(beginCells, endCells, id, begin, end);
     }
     
     private createSelf() {
@@ -140,12 +146,10 @@ class BodyRow {
     }
     
     private createComponents(beginCells: HTMLElement[], endCells: HTMLElement[], id: number, begin: string, end: string) {
-        setTimeout(() => {
-            new BodyRowIdCell(this.element, id);
-            new BodyRowCell(this.element, beginCells, begin, 1);
-            new BodyRowCell(this.element, endCells, end, 2);
-            new BodyRowButtonsCell(this.element, id, begin, end);
-        }, 500);
+        new BodyRowIdCell(this.element, id);
+        new BodyRowCell(this.element, beginCells, begin, 1);
+        new BodyRowCell(this.element, endCells, end, 2);
+        new BodyRowButtonsCell(this.element, id);
     }
     
 }
@@ -158,7 +162,7 @@ class BodyRowCell {
         this.createSelf(text);
         appendTo.appendChild(this.element);
         cells.push(this.element);
-        let headerElement = document.getElementById(`header-${position}`)!;
+        let headerElement = document.getElementById(`vacations-header-${position}`)!;
         let width = headerElement.offsetWidth;
         cells.forEach(cell => {
             if (cell.offsetWidth > width) {
@@ -186,9 +190,9 @@ class BodyRowButtonsCell {
     deleteButton!: HTMLButtonElement
     deleteIcon!: Icon
     
-    constructor(appendTo: HTMLElement, id: number, begin: string, end: string) {
+    constructor(appendTo: HTMLElement, id: number) {
         this.createSelf();
-        this.startListeners(id, begin, end);
+        this.startListeners(id);
         appendTo.appendChild(this.element);
     }
     
@@ -201,14 +205,14 @@ class BodyRowButtonsCell {
         this.element.appendChild(this.deleteButton);
     }
     
-    private startListeners(id: number, begin: string, end: string) {
+    private startListeners(id: number) {
         this.deleteButton.addEventListener("click", async () => {
-            const deleteUserTask = new DeleteUser();
-            const response = await deleteUserTask.execute({ id: id, user: user });
+            const deleteVacationTask = new DeleteVacation();
+            const response = await deleteVacationTask.execute({ id: id });
             if (response.success) {
                 new Notification(response.message, "green");
-                document.getElementById("users-table-body")!.remove();
-                new Body(document.getElementById("users-table")!);
+                document.getElementById("vacations-table-body")!.remove();
+                new Body(document.getElementById("vacations-table")!);
             } else {
                 new Notification(response.message, "red");
             }

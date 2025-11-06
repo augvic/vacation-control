@@ -1,6 +1,8 @@
-import { Icon } from "./icon";
-import { CreateVacation } from "../../tasks/create_vacation";
-import { Notification } from "./notification";
+import { Icon } from "./icon.js";
+import { CreateVacation } from "../../tasks/create_vacation.js";
+import { Notification } from "./notification.js";
+import { Body } from "./vacations_table.js";
+import { VacationsTableWrapper } from "./vacations_table.js";
 
 export class EditModal {
     
@@ -90,7 +92,7 @@ class CloseButton {
     private startListeners() {
         this.element.addEventListener("click", () => {
             document.getElementById("add-modal")!.remove();
-        })
+        });
     }
     
 }
@@ -118,6 +120,8 @@ class ContainerBody {
         new Info(this.element, daysLeft, "days-left", false, "Dias Restantes");
         new Input(this.element, "Início do Período:", "begin", "date");
         new Input(this.element, "Fim do Período:", "end", "date");
+        new AddButton(this.element);
+        new VacationsTableWrapper(this.element);
     }
     
 }
@@ -134,6 +138,9 @@ class Info {
     private createSelf(value: string, id: string, hidden: boolean, prefix: string) {
         this.element = document.createElement("div");
         this.element.innerText = `${prefix}: ${value}`;
+        if (id == "user-id") {
+            this.element.innerText = `${value}`;
+        }
         this.element.id = `edit-modal-${id}`;
         this.element.className = "w-auto h-auto cursor-default";
         if (hidden) {
@@ -155,7 +162,7 @@ class Input {
     private createSelf(placeholder: string, id: string, type: string) {
         this.element = document.createElement("input");
         this.element.placeholder = placeholder;
-        this.element.id = `add-modal-${id}`;
+        this.element.id = `edit-modal-${id}`;
         this.element.type = type;
         this.element.className = "w-[300px] h-[30px] bg-white outline-none border border-gray-300 rounded-md p-2";
     }
@@ -186,13 +193,15 @@ class AddButton {
     private startListeners() {
         this.element.addEventListener("click", async () => {
             const createVacationTask = new CreateVacation();
-            const userId = parseInt((document.getElementById("edit-modal-user-id")! as HTMLDivElement).innerText);
+            const userId = document.getElementById("edit-modal-user-id")!.innerText;
             const user = (document.getElementById("edit-modal-name")! as HTMLDivElement).innerText;
             const begin = (document.getElementById("edit-modal-begin")! as HTMLInputElement).value;
             const end = (document.getElementById("edit-modal-end")! as HTMLInputElement).value;
-            const response = await createVacationTask.execute({ userId: userId, user: user, begin: begin, end: end });
+            const response = await createVacationTask.execute({ userId: parseInt(userId), user: user, begin: begin, end: end });
             if (response.success) {
                 new Notification(response.message, "green");
+                document.getElementById("vacations-table-body")!.remove();
+                new Body(document.getElementById("vacations-table")!);
             } else {
                 new Notification(response.message, "red");
             }

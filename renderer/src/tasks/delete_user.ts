@@ -13,7 +13,7 @@ export class DeleteUser {
             return await this.ipcHandler.deleteUser(data);
         } catch(error) {
             console.error(`❌ Error on (DeleteUser) task: ${error}.`);
-            const err = new Error("❌ Erro interno ao coletar usuários. Contate o administrador.");
+            const err = new Error("❌ Erro interno ao deletar usuário. Contate o administrador.");
             err.name = "";
             throw err;
         }
