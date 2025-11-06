@@ -2,6 +2,7 @@ import { Icon } from "./icon.js";
 import { GetVacations } from "../../tasks/get_vacations.js";
 import { DeleteVacation } from "../../tasks/delete_vacation.js";
 import { Notification } from "./notification.js";
+import { Body } from "./users_table.js";
 
 export class VacationsTableWrapper {
     
@@ -29,7 +30,7 @@ class VacationsTable {
     
     element!: HTMLDivElement
     header!: Header
-    body!: Body
+    body!: VacationsTableBody
     
     constructor(appendTo: HTMLElement) {
         this.createSelf();
@@ -45,7 +46,7 @@ class VacationsTable {
     
     private createComponents() {
         this.header = new Header(this.element);
-        this.body = new Body(this.element);
+        this.body = new VacationsTableBody(this.element);
     }
     
 }
@@ -91,7 +92,7 @@ class HeaderCell {
     
 }
 
-export class Body {
+export class VacationsTableBody {
     
     element!: HTMLDivElement
     
@@ -212,7 +213,11 @@ class BodyRowButtonsCell {
             if (response.success) {
                 new Notification(response.message, "green");
                 document.getElementById("vacations-table-body")!.remove();
-                new Body(document.getElementById("vacations-table")!);
+                new VacationsTableBody(document.getElementById("vacations-table")!);
+                document.getElementById("edit-modal-days-left")!.innerText = `Dias Restantes: ${response.data.daysLeft}`;
+                document.getElementById("edit-modal-status")!.innerText = `Status: ${response.data.status}`;
+                document.getElementById("users-table-body")!.remove();
+                new Body(document.getElementById("users-table")!);
             } else {
                 new Notification(response.message, "red");
             }

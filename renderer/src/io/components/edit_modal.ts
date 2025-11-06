@@ -1,8 +1,9 @@
 import { Icon } from "./icon.js";
 import { CreateVacation } from "../../tasks/create_vacation.js";
 import { Notification } from "./notification.js";
-import { Body } from "./vacations_table.js";
+import { VacationsTableBody } from "./vacations_table.js";
 import { VacationsTableWrapper } from "./vacations_table.js";
+import { Body } from "./users_table.js";
 
 export class EditModal {
     
@@ -201,7 +202,11 @@ class AddButton {
             if (response.success) {
                 new Notification(response.message, "green");
                 document.getElementById("vacations-table-body")!.remove();
-                new Body(document.getElementById("vacations-table")!);
+                new VacationsTableBody(document.getElementById("vacations-table")!);
+                document.getElementById("edit-modal-days-left")!.innerText = `Dias Restantes: ${response.data.daysLeft}`;
+                document.getElementById("edit-modal-status")!.innerText = `Status: ${response.data.status}`;
+                document.getElementById("users-table-body")!.remove();
+                new Body(document.getElementById("users-table")!);
             } else {
                 new Notification(response.message, "red");
             }
