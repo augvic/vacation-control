@@ -137,14 +137,15 @@ class BodyRow {
     element!: HTMLDivElement
     
     constructor(appendTo: HTMLElement, userCells: HTMLElement[], admissionCells: HTMLElement[], statusCells: HTMLElement[], daysLeftCells: HTMLElement[], id: number, user: string, admission: string, status: string, daysLeft: string) {
-        this.createSelf();
+        this.createSelf(user);
         this.createComponents(userCells, admissionCells, statusCells, daysLeftCells, id, user, admission, status, daysLeft);
         appendTo.appendChild(this.element);
     }
     
-    private createSelf() {
+    private createSelf(user: string) {
         this.element = document.createElement("div");
-        this.element.className = "h-auto w-auto flex";
+        this.element.id = user;
+        this.element.className = "h-auto w-auto flex user-row";
     }
     
     private createComponents(userCells: HTMLElement[], admissionCells: HTMLElement[], statusCells: HTMLElement[], daysLeftCells: HTMLElement[], id:number, user: string, admission: string, status: string, daysLeft: string) {
@@ -208,11 +209,11 @@ class BodyRowButtonsCell {
         this.element.className = "h-auto w-auto p-2 flex items-center justify-center whitespace-nowrap gap-x-2";
         this.button = document.createElement("button");
         this.button.className = "w-auto h-auto p-1 bg-gray-900 hover:bg-black cursor-pointer rounded-md transition-colors duration-300"
-        this.icon = new Icon("./storage/icons/vacation.png", this.button);
+        this.icon = new Icon("./storage/icons/vacation.png", 5, this.button);
         this.element.appendChild(this.button);
         this.deleteButton = document.createElement("button");
         this.deleteButton.className = "w-auto h-auto p-1 bg-red-700 hover:bg-red-900 cursor-pointer rounded-md transition-colors duration-300";
-        this.deleteIcon = new Icon("./storage/icons/delete.png", this.deleteButton);
+        this.deleteIcon = new Icon("./storage/icons/delete.png", 5, this.deleteButton);
         this.element.appendChild(this.deleteButton);
     }
     

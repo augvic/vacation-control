@@ -202,7 +202,7 @@ class BodyRowButtonsCell {
         this.element.className = "h-auto w-auto p-2 flex items-center justify-center whitespace-nowrap";
         this.deleteButton = document.createElement("button");
         this.deleteButton.className = "w-auto h-auto p-1 bg-red-700 hover:bg-red-900 cursor-pointer rounded-md transition-colors duration-300";
-        this.deleteIcon = new Icon("./storage/icons/delete.png", this.deleteButton);
+        this.deleteIcon = new Icon("./storage/icons/delete.png", 5, this.deleteButton);
         this.element.appendChild(this.deleteButton);
     }
     

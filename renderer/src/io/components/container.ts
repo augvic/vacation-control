@@ -66,6 +66,7 @@ class SearchInput {
     
     private createSelf() {
         this.element = document.createElement("input");
+        this.element.id = "search-input";
         this.element.className = "w-[400px] h-full p-1 bg-white border border-gray-300 rounded-md outline-none";
         this.element.placeholder = "Pesquisar";
     }
@@ -80,6 +81,7 @@ class SearchButton {
     constructor(appendTo: HTMLElement) {
         this.createSelf();
         this.createComponents();
+        this.startListeners();
         appendTo.appendChild(this.element);
     }
     
@@ -89,7 +91,29 @@ class SearchButton {
     }
     
     private createComponents() {
-        this.icon = new Icon("./storage/icons/magnifying_glass.png", this.element);
+        this.icon = new Icon("./storage/icons/magnifying_glass.png", 5, this.element);
+    }
+    
+    private startListeners() {
+        this.element.addEventListener("click", () => {
+            const rows = document.querySelectorAll(".user-row");
+            const toSearch = (document.getElementById("search-input") as HTMLInputElement)!.value;
+            if (toSearch == "") {
+                rows.forEach(element => {
+                    const row = element as HTMLElement;
+                    row.style.display = "flex";
+                });
+                return;
+            }
+            rows.forEach(element => {
+                const row = element as HTMLElement;
+                if (!row.id.includes(toSearch)) {
+                    row.style.display = "none";
+                } else {
+                    row.style.display = "flex";
+                }
+            });
+        });
     }
     
 }
@@ -112,7 +136,7 @@ class AddButton {
     }
     
     private createComponents() {
-        this.icon = new Icon("./storage/icons/plus.png", this.element);
+        this.icon = new Icon("./storage/icons/plus.png", 5, this.element);
     }
     
     private startListeners() {
@@ -141,7 +165,7 @@ class RefreshButton {
     }
     
     private createComponents() {
-        this.icon = new Icon("./storage/icons/refresh.png", this.element);
+        this.icon = new Icon("./storage/icons/refresh.png", 5, this.element);
     }
     
     private startListeners() {

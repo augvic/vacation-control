@@ -188,7 +188,7 @@ class AddButton {
     }
     
     private createComponents() {
-        this.icon = new Icon("./storage/icons/plus.png", this.element);
+        this.icon = new Icon("./storage/icons/plus.png", 5, this.element);
     }
     
     private startListeners() {
