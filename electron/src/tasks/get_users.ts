@@ -14,14 +14,14 @@ export class GetUsers {
     execute() {
         try {
             const users = this.db.readAllUsers();
-            const [day, month, year] = new Date(Date.now()).toLocaleDateString("pt-BR").split("/");
-            const today = `${day}/${month}`;
+            const today = new Date(Date.now()).getTime();
             users.forEach(user => {
-                const [day, month, year] = user.admission.split("/");
-                const userAdmission = `${day}/${month}`;
-                if (today == userAdmission) {
+                const [day, month, year] = user.admission.split("/").map(Number);
+                const dueDate = new Date(year, month - 1, day).getTime();
+                if (today >= dueDate) {
+                    const newDueDate = new Date(year + 1, month - 1, day).toLocaleDateString("pt-BR");
                     this.db.deleteAllVacations(user.id);
-                    this.db.updateUser(user.id, 30, "Não Marcado");
+                    this.db.updateUser(user.id, 30, "Não Marcado", newDueDate);
                 }
             });
             this.logSystem.write_text(`✅ Funcionários coletados.`);

@@ -48,9 +48,13 @@ export class DbHandler {
         }
     }
     
-    updateUser(id: number, daysLeft: number, status: string) {
+    updateUser(id: number, daysLeft: number, status: string, dueDate: string | null) {
         try {
-            this.db.prepare(`UPDATE users SET daysLeft = ${daysLeft}, status = '${status}' WHERE id = ${id}`).run();
+            if (dueDate != null) {
+                this.db.prepare(`UPDATE users SET daysLeft = ${daysLeft}, status = '${status}', admission = '${dueDate}' WHERE id = ${id}`).run();
+            } else {
+                this.db.prepare(`UPDATE users SET daysLeft = ${daysLeft}, status = '${status}' WHERE id = ${id}`).run();
+            }
         } catch(error) {
             throw new Error(`Error in (Database) component in (updateUser) method: ${error}.`);
         }

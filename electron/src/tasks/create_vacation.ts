@@ -27,8 +27,22 @@ export class CreateVacation {
                 this.logSystem.write_text(`❌ Preencha todos os campos.`);
                 return { success: false, message: `❌ Preencha todos os campos.`, data: { status: "", daysLeft: "" } };
             }
+            const [dayBegin, monthBegin, yearBegin] = begin.split("/").map(Number);
+            const [dayEnd, monthEnd, yearEnd] = end.split("/").map(Number);
+            const dateBegin = new Date(yearBegin, monthBegin - 1, dayBegin).getTime();
+            const dateEnd = new Date(yearEnd, monthEnd - 1, dayEnd).getTime();
+            const user = this.db.readUser(userId)[0];
+            if (dateEnd < dateBegin) {
+                return { success: false, message: `❌ Início do período não pode ser depois do fim.`, data: { status: "", daysLeft: "" } };
+            }
+            const [day, month, year] = user.admission.split("/").map(Number);
+            const dueDateBegin = new Date(year - 1, month - 1, day).getTime();
+            const dueDateEnd = new Date(year, month - 1, day).getTime();
+            if (dateBegin < dueDateBegin || dateEnd < dueDateBegin || dateBegin > dueDateEnd || dateEnd > dueDateEnd) {
+                return { success: false, message: `❌ Registro de férias não se enquadrou no período vigente.`, data: { status: "", daysLeft: "" } };    
+            }
             const diffDays = this.diffDays(begin, end);
-            const userCurrentDaysLeft = parseInt(this.db.readUser(userId)[0].daysLeft);
+            const userCurrentDaysLeft = parseInt(user.daysLeft);
             const newDaysLeft = userCurrentDaysLeft - diffDays;
             if (diffDays > userCurrentDaysLeft) {
                 return { success: false, message: `❌ Período do registro ultrapassa quantidade de dias disponíveis.`, data: { status: "", daysLeft: "" } };    
@@ -40,7 +54,7 @@ export class CreateVacation {
             } else {
                 status = "Marcado Completamente";
             }
-            this.db.updateUser(userId, newDaysLeft, status);
+            this.db.updateUser(userId, newDaysLeft, status, null);
             this.logSystem.write_text(`✅ Registro de férias adicionado.`);
             return { success: true, message: `✅ Registro de férias adicionado.`, data: { status: status, daysLeft: String(newDaysLeft) } };
         } catch(error) {

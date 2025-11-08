@@ -68,9 +68,9 @@ class Header {
     
     private createComponents() {
         new HeaderCell(this.element, "Nome", 1);
-        new HeaderCell(this.element, "Admissão", 2);
+        new HeaderCell(this.element, "Vence Em", 2);
         new HeaderCell(this.element, "Status", 3);
-        new HeaderCell(this.element, "Dias restantes", 4);
+        new HeaderCell(this.element, "Dias Restantes", 4);
         new HeaderCell(this.element, "", 5);
     }
     

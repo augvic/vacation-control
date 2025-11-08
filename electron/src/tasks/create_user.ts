@@ -17,7 +17,17 @@ export class CreateUser {
                 this.logSystem.write_text(`❌ Preencha todos os campos.`);
                 return { success: false, message: `❌ Preencha todos os campos.` };    
             }
-            this.db.createUser(user, admission);
+            const currentYear = new Date(Date.now()).getFullYear();
+            const today = new Date(Date.now()).getTime();
+            const [day, month, year] = admission.split("/").map(Number);
+            const dueDate = new Date(currentYear, month - 1, day).getTime();
+            let date;
+            if (today < dueDate) {
+                date = new Date(currentYear, month - 1, day).toLocaleDateString("pt-BR");
+            } else {
+                date = new Date(currentYear + 1, month - 1, day).toLocaleDateString("pt-BR");
+            }
+            this.db.createUser(user, date);
             this.logSystem.write_text(`✅ Funcionário (${user}) adicionado.`);
             return { success: true, message: `✅ Funcionário (${user}) adicionado.` };
         } catch(error) {

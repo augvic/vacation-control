@@ -111,8 +111,8 @@ class ContainerBody {
     }
     
     private createComponents() {
-        new Input(this.element, "Nome", "name", "text");
-        new Input(this.element, "Admissão", "admission", "date");
+        new Input(this.element, "Nome", "name", "text", "Nome:");
+        new Input(this.element, "Admissão", "admission", "date", "Admissão:");
         new AddButton(this.element);
     }
     
@@ -121,18 +121,26 @@ class ContainerBody {
 class Input {
     
     element!: HTMLInputElement
+    div!: HTMLDivElement
+    label!: HTMLLabelElement
     
-    constructor(appendTo: HTMLElement, placeholder: string, id: string, type: string) {
-        this.createSelf(placeholder, id, type);
-        appendTo.appendChild(this.element);
+    constructor(appendTo: HTMLElement, placeholder: string, id: string, type: string, label: string) {
+        this.createSelf(placeholder, id, type, label);
+        appendTo.appendChild(this.div);
     }
     
-    private createSelf(placeholder: string, id: string, type: string) {
+    private createSelf(placeholder: string, id: string, type: string, label: string) {
+        this.div = document.createElement("div");
+        this.div.className = "flex flex-col gap-y-1"
+        this.label = document.createElement("label");
+        this.label.innerText = label;
         this.element = document.createElement("input");
         this.element.placeholder = placeholder;
         this.element.id = `add-modal-${id}`;
         this.element.type = type;
         this.element.className = "w-[300px] h-[30px] bg-white outline-none border border-gray-300 rounded-md p-2";
+        this.div.appendChild(this.label);
+        this.div.appendChild(this.element);
     }
     
 }
