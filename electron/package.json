@@ -29,5 +29,25 @@
   },
   "devDependencies": {
     "@types/better-sqlite3": "^7.6.13"
+  },
+  "build": {
+    "appId": "com.augvic.vacationcontrol",
+    "productName": "Vacation Control",
+    "files": [
+      "**/*"
+    ],
+    "directories": {
+      "buildResources": "assets"
+    },
+    "win": {
+      "target": "nsis",
+      "icon": "./icon.png"
+    },
+    "linux": {
+      "target": "AppImage"
+    },
+    "mac": {
+      "target": "dmg"
+    }
   }
 }
