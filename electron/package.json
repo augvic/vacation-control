@@ -10,7 +10,8 @@
     "clean": "rm -rf ./.package",
     "copy-files": "cp -r ./storage ./.package/storage",
     "clean-w": "powershell Remove-Item -Recurse -Force .\\.package",
-    "copy-files-w": "powershell Copy-Item -Recurse ./storage ./.package/storage"
+    "copy-files-w": "powershell Copy-Item -Recurse ./storage ./.package/storage",
+    "compile": "electron-builder --dir"
   },
   "repository": {
     "type": "git",
@@ -24,7 +25,6 @@
   "homepage": "https://github.com/augvic/vacation-control#readme",
   "dependencies": {
     "better-sqlite3": "^12.4.1",
-    "electron": "^38.2.2",
     "typescript": "^5.9.3"
   },
   "devDependencies": {

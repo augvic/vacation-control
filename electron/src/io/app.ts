@@ -96,8 +96,8 @@ export class App {
         return new BrowserWindow({
             width: 1280,
             height: 720,
-            minWidth: 1100,
-            minHeight: 600,
+            minWidth: 1280,
+            minHeight: 720,
             frame: false,
             icon: join(__dirname, "..", "..", "icon.png"),
             webPreferences: {
