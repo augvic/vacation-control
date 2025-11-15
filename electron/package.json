@@ -32,7 +32,7 @@
   },
   "build": {
     "appId": "com.augvic.vacationcontrol",
-    "productName": "Vacation Control",
+    "productName": "Controle de Férias",
     "files": [
       "**/*"
     ],
