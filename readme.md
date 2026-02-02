@@ -14,11 +14,11 @@ Simple, practical, and focused on organization ✨.
 
 ## 🧰 Tech Stack
 
-Languages:
+💻 Languages:
 - 🌐 HTML.
 - 🎨 CSS.
 - 🧠 TypeScript.
 
-External tools:
+⚙️ External tools:
 - ⚡ Electron.
 - 💨 Tailwind CSS.
