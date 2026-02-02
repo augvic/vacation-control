@@ -1,58 +1,24 @@
 ## 🏝️ Vacation Control
 
-📆 Vacation control software.
+📆 Vacation control software to manage time off with ease.
 
-## About
+## 📖 About
 
-University project.
+🎓 University project developed as a voluntary initiative.
 
-This software allows the user to registrate collaborators and controls their vacations over the year.
+This software allows users to:
+- 👥 Register collaborators.
+- 🗓️ Track and manage their vacations throughout the year.
 
-Made voluntary.
+Simple, practical, and focused on organization ✨.
 
-## Tech Stack
+## 🧰 Tech Stack
 
 Languages:
-<div>
-    <img width="30px" src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/html5/html5-original.svg" />
-    <img width="30px" src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/css3/css3-original.svg" />
-    <img width="30px" src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/typescript/typescript-original.svg" />
-</div>
+- 🌐 HTML.
+- 🎨 CSS.
+- 🧠 TypeScript.
 
-<br>
-
-Frameworks:
-<div>
-    <img width="30px" src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/electron/electron-original.svg" />
-    <img width="30px" src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/tailwindcss/tailwindcss-original.svg" />
-</div>
-
-## Screenshots
-
-Registrating a collaborator.
-<div>
-    <img width="500px" src="https://cdn.jsdelivr.net/gh/augvic/augvic@latest/screenshots/vacation-control/1.png" />
-</div>
-
-<br>
-
-Collaborator status:
-<div>
-    <img width="500px" src="https://cdn.jsdelivr.net/gh/augvic/augvic@latest/screenshots/vacation-control/2.png" />
-</div>
-
-<br>
-
-Creating a vacation registry:
-<div>
-    <img width="500px" src="https://cdn.jsdelivr.net/gh/augvic/augvic@latest/screenshots/vacation-control/3.png" />
-</div>
-
-<br>
-
-Days consumed overview:
-<div>
-    <img width="500px" src="https://cdn.jsdelivr.net/gh/augvic/augvic@latest/screenshots/vacation-control/4.png" />
-</div>
-
-<br>
+External tools:
+- ⚡ Electron.
+- 💨 Tailwind CSS.
